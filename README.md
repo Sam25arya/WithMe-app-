@@ -15,3 +15,8 @@ Firestore.
 Firebase is initialized using `lib/firebase_options.dart`. Make sure this file
 and the Android configuration at `android/app/google-services.json` belong to
 the same Firebase project.
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for
+details.
