@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _authService = AuthService();
   bool _isLoading = false;
+  bool _rememberMe = true;
 
   @override
   void dispose() {
@@ -57,6 +58,35 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) setState(() => _isLoading = false);
     }
   }
+
+  Future<void> _handleGoogleSignIn() async {
+  setState(() => _isLoading = true);
+
+  try {
+    await _authService.signInWithGoogle();
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Color(0xFF1A2640),
+        content: Text(
+          '✅ Signed in with Google successfully!',
+          style: TextStyle(
+            color: AppColors.textPrimary,
+          ),
+        ),
+      ),
+    );
+  } catch (errorMsg) {
+    if (!mounted) return;
+    _showError(errorMsg.toString());
+  } finally {
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
+  }
+}
 
   // ── Forgot Password Dialog ─────────────────────────────────────────────────
   void _handleForgotPassword() {
@@ -304,30 +334,120 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Forgot Password link
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: _handleForgotPassword,
-                      child: const Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          color: AppColors.highlightGold,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                  // Remember Me + Forgot Password
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _rememberMe,
+                            onChanged: (value) {
+                              setState(() {
+                                _rememberMe = value ?? false;
+                              });
+                            },
+                            activeColor: AppColors.accentRed,
+                            checkColor: Colors.white,
+                          ),
+                          const Text(
+                            'Remember me',
+                            style: TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      TextButton(
+                        onPressed: _handleForgotPassword,
+                        child: const Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            color: AppColors.highlightGold,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                   const SizedBox(height: 20),
 
                   // Sign In Button
-                  CustomButton(
-                    text: 'Sign In',
-                    isLoading: _isLoading,
-                    onPressed: _handleLogin,
-                  ),
-                  const SizedBox(height: 28),
+CustomButton(
+  text: 'Sign In',
+  isLoading: _isLoading,
+  onPressed: _handleLogin,
+),
+
+const SizedBox(height: 20),
+
+// OR
+Row(
+  children: [
+    Expanded(
+      child: Divider(
+        color: AppColors.textSecondary.withValues(alpha: 0.3),
+      ),
+    ),
+    const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Text(
+        'OR',
+        style: TextStyle(
+          color: AppColors.textSecondary,
+          fontSize: 12,
+        ),
+      ),
+    ),
+    Expanded(
+      child: Divider(
+        color: AppColors.textSecondary.withValues(alpha: 0.3),
+      ),
+    ),
+  ],
+),
+
+const SizedBox(height: 20),
+
+/// Google Sign In----------------------------------------------------------------
+
+const SizedBox(height: 20),
+
+SizedBox(
+  width: double.infinity,
+  height: 52,
+  child: OutlinedButton.icon(
+    onPressed: _isLoading ? null : _handleGoogleSignIn,
+    icon: const Icon(
+      Icons.g_mobiledata,
+      size: 30,
+      color: Colors.white,
+    ),
+    label: const Text(
+      'Continue with Google',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+    style: OutlinedButton.styleFrom(
+      side: BorderSide(
+        color: AppColors.textSecondary.withValues(alpha: 0.35),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+    ),
+  ),
+),
+
+const SizedBox(height: 28),
+
+
 
                   // Don't have an account? Sign Up
                   Row(

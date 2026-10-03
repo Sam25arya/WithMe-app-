@@ -9,6 +9,23 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // ─────────────────────────────────────────────────────────────────────────
+  // Sign IN With Google
+  // ─────────────────────────────────────────────────────────────────────────
+
+Future<UserCredential> signInWithGoogle() async {
+  try {
+    final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+    return await _auth.signInWithPopup(googleProvider);
+  } on FirebaseAuthException catch (e) {
+    throw _friendlyError(e.code);
+  }
+}
+
+
+
+
+  // ─────────────────────────────────────────────────────────────────────────
   // CURRENT USER
   // ─────────────────────────────────────────────────────────────────────────
 
