@@ -8,6 +8,7 @@ Firestore.
 1. Install the Flutter SDK.
 2. Fetch dependencies with `flutter pub get`.
 3. Start the app with `flutter run`.
+4. flutter run -d chrome ---------(To run in web!!)
 
 ## Firebase
 
