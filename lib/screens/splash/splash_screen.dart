@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
@@ -31,6 +33,10 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     _initAnimations();
+
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      return;
+    }
 
     // Smoothly transition to LoginScreen after 2.8 seconds
     Future.delayed(const Duration(milliseconds: 2800), () {

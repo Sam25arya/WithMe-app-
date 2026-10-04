@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../screens/splash/splash_screen.dart';
 import '../../screens/auth/login_screen.dart';
 import '../../screens/auth/register_screen.dart';
+import '../../screens/onboarding/welcome_screen.dart';
 
 /// AppRoutes defines all screen route names and their builders.
 class AppRoutes {
@@ -18,6 +19,10 @@ class AppRoutes {
       login:    (context) => const LoginScreen(),
       register: (context) => const RegisterScreen(),
       // onboarding, home, chat → added in Phase 3
+
+      onboarding: (context) =>  const WelcomeScreen(),
+
+      // home, chat -> Phase 4
     };
   }
 }

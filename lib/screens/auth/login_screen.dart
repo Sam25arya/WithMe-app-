@@ -67,17 +67,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        backgroundColor: Color(0xFF1A2640),
-        content: Text(
-          '✅ Signed in with Google successfully!',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ),
-    );
+    Navigator.pushReplacementNamed(
+  context,
+  AppRoutes.onboarding,
+);
   } catch (errorMsg) {
     if (!mounted) return;
     _showError(errorMsg.toString());

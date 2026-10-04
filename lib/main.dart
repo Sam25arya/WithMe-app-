@@ -37,3 +37,6 @@ class WithMeApp extends StatelessWidget {
     );
   }
 }
+
+/// Backward-compatible alias for earlier smoke tests and app entry usage.
+typedef MyApp = WithMeApp;
