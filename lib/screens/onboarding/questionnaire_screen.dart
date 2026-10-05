@@ -34,6 +34,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     super.dispose();
   }
 
+  // --------------------------------------------------
+  // LOAD TEXT ANSWER
+  // --------------------------------------------------
+
   void _loadTextAnswer() {
     final question = _currentQuestion;
 
@@ -46,6 +50,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     }
   }
 
+  // --------------------------------------------------
+  // SAVE CURRENT ANSWER
+  // --------------------------------------------------
+
   void _saveCurrentAnswer() {
     final question = _currentQuestion;
 
@@ -55,9 +63,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     }
   }
 
+  // --------------------------------------------------
+  // VALIDATE CURRENT QUESTION
+  // --------------------------------------------------
+
   bool _validateCurrentQuestion() {
     final question = _currentQuestion;
 
+    // Optional questions can always continue.
     if (!question.required) {
       return true;
     }
@@ -81,6 +94,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     return true;
   }
 
+  // --------------------------------------------------
+  // NEXT QUESTION
+  // --------------------------------------------------
+
   void _nextQuestion() {
     _saveCurrentAnswer();
 
@@ -90,7 +107,9 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
           backgroundColor: AppColors.accentRed,
           content: Text(
             'Please answer this question before continuing.',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
       );
@@ -108,6 +127,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     });
   }
 
+  // --------------------------------------------------
+  // PREVIOUS QUESTION
+  // --------------------------------------------------
+
   void _previousQuestion() {
     _saveCurrentAnswer();
 
@@ -122,8 +145,33 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     });
   }
 
+  // --------------------------------------------------
+  // SKIP QUESTION
+  // --------------------------------------------------
+
+  void _skipQuestion() {
+    final question = _currentQuestion;
+
+    // Remove any existing answer.
+    _answers.remove(question.id);
+
+    if (_isLastQuestion) {
+      _finishQuestionnaire();
+      return;
+    }
+
+    setState(() {
+      _currentIndex++;
+      _loadTextAnswer();
+    });
+  }
+
+  // --------------------------------------------------
+  // FINISH QUESTIONNAIRE
+  // --------------------------------------------------
+
   void _finishQuestionnaire() {
-    // Firestore saving will be added next.
+    // Firestore saving will be added in the next phase.
     debugPrint('Questionnaire answers: $_answers');
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -139,11 +187,19 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     );
   }
 
+  // --------------------------------------------------
+  // SINGLE CHOICE
+  // --------------------------------------------------
+
   void _selectSingleChoice(String option) {
     setState(() {
       _answers[_currentQuestion.id] = option;
     });
   }
+
+  // --------------------------------------------------
+  // MULTIPLE CHOICE
+  // --------------------------------------------------
 
   void _toggleMultipleChoice(String option) {
     final questionId = _currentQuestion.id;
@@ -163,11 +219,19 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     });
   }
 
+  // --------------------------------------------------
+  // COLOUR
+  // --------------------------------------------------
+
   void _selectColour(String colour) {
     setState(() {
       _answers[_currentQuestion.id] = colour;
     });
   }
+
+  // --------------------------------------------------
+  // BUILD
+  // --------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -179,9 +243,17 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top bar
+            // --------------------------------------------------
+            // TOP BAR
+            // --------------------------------------------------
+
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 18, 20, 10),
+              padding: const EdgeInsets.fromLTRB(
+                20,
+                18,
+                20,
+                10,
+              ),
               child: Row(
                 children: [
                   IconButton(
@@ -191,6 +263,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       color: AppColors.textPrimary,
                     ),
                   ),
+
                   const Expanded(
                     child: Text(
                       'Getting to Know You',
@@ -202,18 +275,25 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       ),
                     ),
                   ),
+
                   const SizedBox(width: 48),
                 ],
               ),
             ),
 
-            // Progress
+            // --------------------------------------------------
+            // PROGRESS
+            // --------------------------------------------------
+
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 28,
+              ),
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Question ${_currentIndex + 1} of ${questions.length}',
@@ -222,6 +302,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                           fontSize: 13,
                         ),
                       ),
+
                       Text(
                         '${(progress * 100).round()}%',
                         style: const TextStyle(
@@ -232,27 +313,41 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 8),
+
                   LinearProgressIndicator(
                     value: progress,
                     minHeight: 6,
                     backgroundColor:
-                        AppColors.textSecondary.withValues(alpha: 0.15),
-                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        AppColors.textSecondary
+                            .withValues(alpha: 0.15),
+                    valueColor:
+                        const AlwaysStoppedAnimation<Color>(
                       AppColors.accentRed,
                     ),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius:
+                        BorderRadius.circular(10),
                   ),
                 ],
               ),
             ),
 
-            // Question content
+            // --------------------------------------------------
+            // QUESTION CONTENT
+            // --------------------------------------------------
+
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(28, 40, 28, 20),
+                padding: const EdgeInsets.fromLTRB(
+                  28,
+                  40,
+                  28,
+                  20,
+                ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
                     Text(
                       question.section.toUpperCase(),
@@ -276,6 +371,22 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       ),
                     ),
 
+                    // --------------------------------------------------
+                    // OPTIONAL LABEL
+                    // --------------------------------------------------
+
+                    if (!question.required) ...[
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Optional',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 13,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+
                     const SizedBox(height: 30),
 
                     _buildQuestionInput(question),
@@ -284,23 +395,34 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
               ),
             ),
 
-            // Bottom navigation
+            // --------------------------------------------------
+            // BOTTOM NAVIGATION
+            // --------------------------------------------------
+
             Padding(
-              padding: const EdgeInsets.fromLTRB(28, 10, 28, 25),
+              padding: const EdgeInsets.fromLTRB(
+                28,
+                10,
+                28,
+                25,
+              ),
               child: Row(
                 children: [
+                  // BACK
                   if (_currentIndex > 0)
                     Expanded(
                       child: OutlinedButton(
                         onPressed: _previousQuestion,
                         style: OutlinedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 54),
+                          minimumSize:
+                              const Size(double.infinity, 54),
                           side: BorderSide(
                             color: AppColors.textSecondary
                                 .withValues(alpha: 0.35),
                           ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius:
+                                BorderRadius.circular(14),
                           ),
                         ),
                         child: const Text(
@@ -317,19 +439,57 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                   if (_currentIndex > 0)
                     const SizedBox(width: 12),
 
+                  // SKIP
+                  // Only appears for optional questions.
+                  if (!question.required)
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: _skipQuestion,
+                        style: OutlinedButton.styleFrom(
+                          minimumSize:
+                              const Size(double.infinity, 54),
+                          side: BorderSide(
+                            color: AppColors.textSecondary
+                                .withValues(alpha: 0.35),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(14),
+                          ),
+                        ),
+                        child: const Text(
+                          'Skip',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  if (!question.required)
+                    const SizedBox(width: 12),
+
+                  // NEXT / FINISH
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _nextQuestion,
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 54),
-                        backgroundColor: AppColors.accentRed,
+                        minimumSize:
+                            const Size(double.infinity, 54),
+                        backgroundColor:
+                            AppColors.accentRed,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
+                          borderRadius:
+                              BorderRadius.circular(14),
                         ),
                       ),
                       child: Text(
-                        _isLastQuestion ? 'Finish' : 'Next',
+                        _isLastQuestion
+                            ? 'Finish'
+                            : 'Next',
                         style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
@@ -346,8 +506,18 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     );
   }
 
-  Widget _buildQuestionInput(Question question) {
+  // --------------------------------------------------
+  // QUESTION INPUT
+  // --------------------------------------------------
+
+  Widget _buildQuestionInput(
+    Question question,
+  ) {
     switch (question.type) {
+      // --------------------------------------------------
+      // SHORT ANSWER
+      // --------------------------------------------------
+
       case QuestionType.shortAnswer:
         return TextField(
           controller: _textController,
@@ -364,19 +534,26 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
             filled: true,
             fillColor: AppColors.background,
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius:
+                  BorderRadius.circular(14),
               borderSide: BorderSide(
-                color: AppColors.textSecondary.withValues(alpha: 0.3),
+                color: AppColors.textSecondary
+                    .withValues(alpha: 0.3),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius:
+                  BorderRadius.circular(14),
               borderSide: const BorderSide(
                 color: AppColors.accentRed,
               ),
             ),
           ),
         );
+
+      // --------------------------------------------------
+      // LONG ANSWER
+      // --------------------------------------------------
 
       case QuestionType.longAnswer:
         return TextField(
@@ -387,20 +564,24 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
           ),
           maxLines: 6,
           decoration: InputDecoration(
-            hintText: 'Tell me anything you would like to share...',
+            hintText:
+                'Tell me anything you would like to share...',
             hintStyle: const TextStyle(
               color: AppColors.textSecondary,
             ),
             filled: true,
             fillColor: AppColors.background,
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius:
+                  BorderRadius.circular(14),
               borderSide: BorderSide(
-                color: AppColors.textSecondary.withValues(alpha: 0.3),
+                color: AppColors.textSecondary
+                    .withValues(alpha: 0.3),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius:
+                  BorderRadius.circular(14),
               borderSide: const BorderSide(
                 color: AppColors.accentRed,
               ),
@@ -408,20 +589,33 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
           ),
         );
 
+      // --------------------------------------------------
+      // SINGLE CHOICE
+      // --------------------------------------------------
+
       case QuestionType.singleChoice:
-        final selected = _answers[question.id] as String?;
+        final selected =
+            _answers[question.id] as String?;
 
         return Column(
-          children: question.options.map((option) {
-            final isSelected = selected == option;
+          children: question.options.map(
+            (option) {
+              final isSelected =
+                  selected == option;
 
-            return _choiceButton(
-              text: option,
-              selected: isSelected,
-              onTap: () => _selectSingleChoice(option),
-            );
-          }).toList(),
+              return _choiceButton(
+                text: option,
+                selected: isSelected,
+                onTap: () =>
+                    _selectSingleChoice(option),
+              );
+            },
+          ).toList(),
         );
+
+      // --------------------------------------------------
+      // MULTIPLE CHOICE
+      // --------------------------------------------------
 
       case QuestionType.multipleChoice:
         final selected = List<String>.from(
@@ -429,22 +623,34 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
         );
 
         return Column(
-          children: question.options.map((option) {
-            final isSelected = selected.contains(option);
+          children: question.options.map(
+            (option) {
+              final isSelected =
+                  selected.contains(option);
 
-            return _choiceButton(
-              text: option,
-              selected: isSelected,
-              multiple: true,
-              onTap: () => _toggleMultipleChoice(option),
-            );
-          }).toList(),
+              return _choiceButton(
+                text: option,
+                selected: isSelected,
+                multiple: true,
+                onTap: () =>
+                    _toggleMultipleChoice(option),
+              );
+            },
+          ).toList(),
         );
+
+      // --------------------------------------------------
+      // COLOUR
+      // --------------------------------------------------
 
       case QuestionType.colour:
         return _buildColourPicker();
     }
   }
+
+  // --------------------------------------------------
+  // CHOICE BUTTON
+  // --------------------------------------------------
 
   Widget _choiceButton({
     required String text,
@@ -465,13 +671,16 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
           ),
           decoration: BoxDecoration(
             color: selected
-                ? AppColors.accentRed.withValues(alpha: 0.15)
+                ? AppColors.accentRed
+                    .withValues(alpha: 0.15)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius:
+                BorderRadius.circular(14),
             border: Border.all(
               color: selected
                   ? AppColors.accentRed
-                  : AppColors.textSecondary.withValues(alpha: 0.3),
+                  : AppColors.textSecondary
+                      .withValues(alpha: 0.3),
               width: selected ? 1.5 : 1,
             ),
           ),
@@ -481,7 +690,8 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                 multiple
                     ? (selected
                         ? Icons.check_box_rounded
-                        : Icons.check_box_outline_blank_rounded)
+                        : Icons
+                            .check_box_outline_blank_rounded)
                     : (selected
                         ? Icons.radio_button_checked
                         : Icons.radio_button_off),
@@ -489,15 +699,19 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                     ? AppColors.accentRed
                     : AppColors.textSecondary,
               ),
+
               const SizedBox(width: 14),
+
               Expanded(
                 child: Text(
                   text,
                   style: TextStyle(
-                    color: AppColors.textPrimary,
+                    color:
+                        AppColors.textPrimary,
                     fontSize: 15,
-                    fontWeight:
-                        selected ? FontWeight.w600 : FontWeight.normal,
+                    fontWeight: selected
+                        ? FontWeight.w600
+                        : FontWeight.normal,
                   ),
                 ),
               ),
@@ -507,6 +721,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       ),
     );
   }
+
+  // --------------------------------------------------
+  // COLOUR PICKER
+  // --------------------------------------------------
 
   Widget _buildColourPicker() {
     final colours = <String, Color>{
@@ -521,38 +739,47 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       'Orange': Colors.orange,
     };
 
-    final selected = _answers[_currentQuestion.id] as String?;
+    final selected =
+        _answers[_currentQuestion.id] as String?;
 
     return Wrap(
       spacing: 14,
       runSpacing: 14,
-      children: colours.entries.map((entry) {
-        final isSelected = selected == entry.key;
+      children: colours.entries.map(
+        (entry) {
+          final isSelected =
+              selected == entry.key;
 
-        return GestureDetector(
-          onTap: () => _selectColour(entry.key),
-          child: Container(
-            width: 75,
-            height: 75,
-            decoration: BoxDecoration(
-              color: entry.value,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: isSelected
-                    ? AppColors.accentRed
-                    : AppColors.textSecondary.withValues(alpha: 0.3),
-                width: isSelected ? 4 : 1,
+          return GestureDetector(
+            onTap: () =>
+                _selectColour(entry.key),
+            child: Container(
+              width: 75,
+              height: 75,
+              decoration: BoxDecoration(
+                color: entry.value,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected
+                      ? AppColors.accentRed
+                      : AppColors.textSecondary
+                          .withValues(alpha: 0.3),
+                  width: isSelected ? 4 : 1,
+                ),
               ),
+              child: isSelected
+                  ? Icon(
+                      Icons.check,
+                      color: entry.key == 'White' ||
+                              entry.key == 'Yellow'
+                          ? Colors.black
+                          : Colors.white,
+                    )
+                  : null,
             ),
-            child: isSelected
-                ? const Icon(
-                    Icons.check,
-                    color: Colors.white,
-                  )
-                : null,
-          ),
-        );
-      }).toList(),
+          );
+        },
+      ).toList(),
     );
   }
 }
