@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/dashboard/dashboard_screen.dart';
 import '../../core/constants/app_colors.dart';
 import '../../data/question_model.dart';
 import '../../data/questions.dart';
@@ -116,11 +117,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       return;
     }
 
+    // If this is the final question,
+    // finish the questionnaire and open Dashboard.
     if (_isLastQuestion) {
       _finishQuestionnaire();
       return;
     }
 
+    // Otherwise move to the next question.
     setState(() {
       _currentIndex++;
       _loadTextAnswer();
@@ -171,18 +175,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   // --------------------------------------------------
 
   void _finishQuestionnaire() {
-    // Firestore saving will be added in the next phase.
+    _saveCurrentAnswer();
+
     debugPrint('Questionnaire answers: $_answers');
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        backgroundColor: Color(0xFF1A2640),
-        content: Text(
-          '✅ Questionnaire completed!',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-          ),
-        ),
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DashboardScreen(),
       ),
     );
   }
@@ -263,7 +263,6 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       color: AppColors.textPrimary,
                     ),
                   ),
-
                   const Expanded(
                     child: Text(
                       'Getting to Know You',
@@ -275,7 +274,6 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       ),
                     ),
                   ),
-
                   const SizedBox(width: 48),
                 ],
               ),
@@ -302,7 +300,6 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                           fontSize: 13,
                         ),
                       ),
-
                       Text(
                         '${(progress * 100).round()}%',
                         style: const TextStyle(
@@ -313,9 +310,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 8),
-
                   LinearProgressIndicator(
                     value: progress,
                     minHeight: 6,
@@ -408,7 +403,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
               ),
               child: Row(
                 children: [
+                  // --------------------------------------------------
                   // BACK
+                  // --------------------------------------------------
+
                   if (_currentIndex > 0)
                     Expanded(
                       child: OutlinedButton(
@@ -439,8 +437,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                   if (_currentIndex > 0)
                     const SizedBox(width: 12),
 
+                  // --------------------------------------------------
                   // SKIP
-                  // Only appears for optional questions.
+                  // --------------------------------------------------
+
                   if (!question.required)
                     Expanded(
                       child: OutlinedButton(
@@ -471,7 +471,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                   if (!question.required)
                     const SizedBox(width: 12),
 
+                  // --------------------------------------------------
                   // NEXT / FINISH
+                  // --------------------------------------------------
+
                   Expanded(
                     child: ElevatedButton(
                       onPressed: _nextQuestion,
