@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "551869451781",
+    "project_id": "withme-a1673",
+    "storage_bucket": "withme-a1673.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551869451781:android:8b1635968d8657041c966c",
+        "android_client_info": {
+          "package_name": "com.example.with_me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "551869451781-gd18ilae1c7el1sachg9i1a0s8ep154u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1ue8cNSHhupZCaM5WCeo-dW__PmBLgqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "551869451781-gd18ilae1c7el1sachg9i1a0s8ep154u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
