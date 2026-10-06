@@ -29,3 +29,4 @@ class AppRoutes {
     };
   }
 }
+// The AppRoutes class provides a centralized location for defining route names and their corresponding widget builders. This makes it easier to manage navigation within the app and ensures that all routes are defined in one place.

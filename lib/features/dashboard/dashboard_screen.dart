@@ -836,7 +836,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void _showMoreMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF101827),
+      backgroundColor: const Color(0xFF080B18),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),

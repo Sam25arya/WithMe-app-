@@ -5,11 +5,13 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_strings.dart';
 import '../../core/routes/app_routes.dart';
 
-/// SplashScreen combines:
-/// - Cinematic dark-light background
-/// - Ambient red waves and corner circles
-/// - With Me logo
-/// - App title and tagline
+/// SplashScreen for the With Me application.
+///
+/// Theme:
+/// - Midnight Blue background
+/// - Soft Lavender accents
+/// - New With Me logo
+/// - Smooth entrance and ambient animations
 /// - Firebase authentication check
 ///
 /// Authentication flow:
@@ -137,11 +139,11 @@ class _SplashScreenState extends State<SplashScreen>
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF070B16),
+      backgroundColor: AppColors.background,
       body: Stack(
         children: [
           // ───────────────────────────────────────────────────────────────
-          // 1. CINEMATIC DARK-LIGHT BASE
+          // 1. MIDNIGHT BLUE BASE
           // ───────────────────────────────────────────────────────────────
 
           Container(
@@ -152,8 +154,8 @@ class _SplashScreenState extends State<SplashScreen>
                 begin: Alignment.topRight,
                 end: Alignment.bottomLeft,
                 colors: [
-                  Color(0xFF1A2640),
-                  Color(0xFF131D32),
+                  Color(0xFF161D38),
+                  Color(0xFF10162A),
                   Color(0xFF090E1A),
                   Color(0xFF04060E),
                 ],
@@ -178,8 +180,8 @@ class _SplashScreenState extends State<SplashScreen>
                   center: const Alignment(0.10, -0.18),
                   radius: 0.95,
                   colors: [
-                    const Color(0xFF1F2D4A).withOpacity(0.70),
-                    const Color(0xFF121A2D).withOpacity(0.35),
+                    AppColors.primary.withOpacity(0.16),
+                    AppColors.indigoSlate.withOpacity(0.20),
                     Colors.transparent,
                   ],
                   stops: const [
@@ -249,21 +251,21 @@ class _SplashScreenState extends State<SplashScreen>
           ),
 
           // ───────────────────────────────────────────────────────────────
-          // 5. SUBTLE BACKGROUND GLOW
+          // 5. SUBTLE LAVENDER BACKGROUND GLOW
           // ───────────────────────────────────────────────────────────────
 
           Positioned.fill(
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: RadialGradient(
-                  center: Alignment(0.0, 0.0),
+                  center: const Alignment(0.0, 0.0),
                   radius: 0.80,
                   colors: [
-                    Color(0x20182E4E),
-                    Color(0x0E111F38),
+                    AppColors.primary.withOpacity(0.08),
+                    AppColors.indigoSlate.withOpacity(0.06),
                     Colors.transparent,
                   ],
-                  stops: [
+                  stops: const [
                     0.0,
                     0.55,
                     1.0,
@@ -274,7 +276,7 @@ class _SplashScreenState extends State<SplashScreen>
           ),
 
           // ───────────────────────────────────────────────────────────────
-          // 6. TOP-LEFT RED GLOW
+          // 6. TOP-LEFT LAVENDER GLOW
           // ───────────────────────────────────────────────────────────────
 
           Positioned.fill(
@@ -284,8 +286,8 @@ class _SplashScreenState extends State<SplashScreen>
                   center: const Alignment(-0.82, -0.82),
                   radius: 0.90,
                   colors: [
-                    const Color(0xFFE52535).withOpacity(0.18),
-                    const Color(0xFF1A2848).withOpacity(0.22),
+                    AppColors.primary.withOpacity(0.16),
+                    AppColors.indigoSlate.withOpacity(0.20),
                     Colors.transparent,
                   ],
                   stops: const [
@@ -299,7 +301,7 @@ class _SplashScreenState extends State<SplashScreen>
           ),
 
           // ───────────────────────────────────────────────────────────────
-          // 7. BOTTOM-RIGHT RED GLOW
+          // 7. BOTTOM-RIGHT LAVENDER GLOW
           // ───────────────────────────────────────────────────────────────
 
           Positioned.fill(
@@ -309,8 +311,8 @@ class _SplashScreenState extends State<SplashScreen>
                   center: const Alignment(0.82, 0.82),
                   radius: 0.90,
                   colors: [
-                    const Color(0xFFE52535).withOpacity(0.20),
-                    const Color(0xFF18263F).withOpacity(0.25),
+                    AppColors.primary.withOpacity(0.18),
+                    AppColors.indigoSlate.withOpacity(0.22),
                     Colors.transparent,
                   ],
                   stops: const [
@@ -346,7 +348,10 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    // ─────────────────────────────────────────────────────
                     // LOGO
+                    // ─────────────────────────────────────────────────────
+
                     AnimatedBuilder(
                       animation: _pulseController!,
                       builder: (context, child) {
@@ -359,43 +364,36 @@ class _SplashScreenState extends State<SplashScreen>
                             borderRadius: BorderRadius.circular(40),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFE52535)
-                                    .withOpacity(0.55 * glow),
-                                blurRadius: 48 * glow,
-                                spreadRadius: 2 * glow,
-                                offset: Offset(
-                                  0,
-                                  -18 * glow,
+                                color: AppColors.primary.withOpacity(
+                                  0.30 * glow,
                                 ),
-                              ),
-                              BoxShadow(
-                                color: const Color(0xFFE52535)
-                                    .withOpacity(0.45 * glow),
                                 blurRadius: 42 * glow,
                                 spreadRadius: 2 * glow,
                                 offset: Offset(
-                                  -16 * glow,
                                   0,
+                                  -12 * glow,
                                 ),
                               ),
                               BoxShadow(
-                                color: const Color(0xFFE52535)
-                                    .withOpacity(0.45 * glow),
-                                blurRadius: 42 * glow,
+                                color: AppColors.primary.withOpacity(
+                                  0.24 * glow,
+                                ),
+                                blurRadius: 36 * glow,
                                 spreadRadius: 2 * glow,
                                 offset: Offset(
-                                  16 * glow,
+                                  -12 * glow,
                                   0,
                                 ),
                               ),
                               BoxShadow(
-                                color: const Color(0xFFE52535)
-                                    .withOpacity(0.30 * glow),
-                                blurRadius: 18 * glow,
-                                spreadRadius: 1 * glow,
+                                color: AppColors.primary.withOpacity(
+                                  0.24 * glow,
+                                ),
+                                blurRadius: 36 * glow,
+                                spreadRadius: 2 * glow,
                                 offset: Offset(
+                                  12 * glow,
                                   0,
-                                  -4 * glow,
                                 ),
                               ),
                             ],
@@ -403,15 +401,9 @@ class _SplashScreenState extends State<SplashScreen>
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(40),
                             child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE8E2D8),
-                                border: Border.all(
-                                  color: Colors.white.withOpacity(0.15),
-                                  width: 1.0,
-                                ),
-                              ),
+                              color: Colors.black,
                               child: Image.asset(
-                                'assets/images/withme_logo.png',
+                                'assets/images/withme_logo.jpeg',
                                 fit: BoxFit.cover,
                                 errorBuilder:
                                     (context, error, stackTrace) {
@@ -433,11 +425,14 @@ class _SplashScreenState extends State<SplashScreen>
 
                     const SizedBox(height: 36),
 
+                    // ─────────────────────────────────────────────────────
                     // APP TITLE
+                    // ─────────────────────────────────────────────────────
+
                     const Text(
                       AppStrings.appName,
                       style: TextStyle(
-                        color: Color(0xFFF5F1E8),
+                        color: AppColors.textPrimary,
                         fontSize: 34,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 0.6,
@@ -446,11 +441,14 @@ class _SplashScreenState extends State<SplashScreen>
 
                     const SizedBox(height: 8),
 
+                    // ─────────────────────────────────────────────────────
                     // TAGLINE
+                    // ─────────────────────────────────────────────────────
+
                     const Text(
                       AppStrings.appTagline,
                       style: TextStyle(
-                        color: Color(0xFFD6B56D),
+                        color: AppColors.primaryLight,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         letterSpacing: 0.5,
@@ -459,8 +457,11 @@ class _SplashScreenState extends State<SplashScreen>
 
                     const SizedBox(height: 22),
 
+                    // ─────────────────────────────────────────────────────
                     // DIVIDER
-                    const _RedStarDivider(),
+                    // ─────────────────────────────────────────────────────
+
+                    const _LavenderStarDivider(),
                   ],
                 ),
               ),
@@ -473,11 +474,11 @@ class _SplashScreenState extends State<SplashScreen>
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// RED STAR DIVIDER
+// LAVENDER STAR DIVIDER
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _RedStarDivider extends StatelessWidget {
-  const _RedStarDivider();
+class _LavenderStarDivider extends StatelessWidget {
+  const _LavenderStarDivider();
 
   @override
   Widget build(BuildContext context) {
@@ -491,7 +492,7 @@ class _RedStarDivider extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 Colors.transparent,
-                const Color(0xFFE52535).withOpacity(0.80),
+                AppColors.primary.withOpacity(0.80),
               ],
             ),
           ),
@@ -502,7 +503,7 @@ class _RedStarDivider extends StatelessWidget {
           child: CustomPaint(
             size: const Size(12, 12),
             painter: _DiamondStarPainter(
-              color: const Color(0xFFE52535),
+              color: AppColors.primary,
             ),
           ),
         ),
@@ -513,7 +514,7 @@ class _RedStarDivider extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                const Color(0xFFE52535).withOpacity(0.80),
+                AppColors.primary.withOpacity(0.80),
                 Colors.transparent,
               ],
             ),
@@ -547,24 +548,28 @@ class _DiamondStarPainter extends CustomPainter {
     final cy = size.height / 2;
 
     path.moveTo(cx, 0);
+
     path.quadraticBezierTo(
       cx,
       cy,
       size.width,
       cy,
     );
+
     path.quadraticBezierTo(
       cx,
       cy,
       cx,
       size.height,
     );
+
     path.quadraticBezierTo(
       cx,
       cy,
       0,
       cy,
     );
+
     path.quadraticBezierTo(
       cx,
       cy,
@@ -676,7 +681,7 @@ class _AmbientAtmospherePainter extends CustomPainter {
     );
 
     // ─────────────────────────────────────────────────────────────────────
-    // TOP-LEFT CIRCLE
+    // TOP-LEFT LAVENDER CIRCLE
     // ─────────────────────────────────────────────────────────────────────
 
     final tlCenter = const Offset(
@@ -691,16 +696,16 @@ class _AmbientAtmospherePainter extends CustomPainter {
       radius: tlRadius,
     );
 
-    final tlShader = const LinearGradient(
+    final tlShader = LinearGradient(
       begin: Alignment.bottomLeft,
       end: Alignment.topRight,
       colors: [
-        Color(0xFFFF253B),
-        Color(0x99E52535),
-        Color(0x33E52535),
+        AppColors.primary,
+        AppColors.primary.withOpacity(0.60),
+        AppColors.primary.withOpacity(0.18),
         Colors.transparent,
       ],
-      stops: [
+      stops: const [
         0.0,
         0.35,
         0.70,
@@ -718,7 +723,7 @@ class _AmbientAtmospherePainter extends CustomPainter {
     final tlGlowPaint = Paint()
       ..shader = tlShader
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 6.0
+      ..strokeWidth = 5.0
       ..strokeCap = StrokeCap.round
       ..maskFilter = const MaskFilter.blur(
         BlurStyle.normal,
@@ -728,7 +733,7 @@ class _AmbientAtmospherePainter extends CustomPainter {
     final tlCorePaint = Paint()
       ..shader = tlShader
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 1.8
       ..strokeCap = StrokeCap.round
       ..maskFilter = const MaskFilter.blur(
         BlurStyle.solid,
@@ -752,7 +757,7 @@ class _AmbientAtmospherePainter extends CustomPainter {
     );
 
     // ─────────────────────────────────────────────────────────────────────
-    // BOTTOM-RIGHT CIRCLE
+    // BOTTOM-RIGHT LAVENDER CIRCLE
     // ─────────────────────────────────────────────────────────────────────
 
     final brCenter = Offset(
@@ -767,16 +772,16 @@ class _AmbientAtmospherePainter extends CustomPainter {
       radius: brRadius,
     );
 
-    final brShader = const LinearGradient(
+    final brShader = LinearGradient(
       begin: Alignment.topRight,
       end: Alignment.bottomLeft,
       colors: [
-        Color(0xFFFF253B),
-        Color(0x99E52535),
-        Color(0x33E52535),
+        AppColors.primary,
+        AppColors.primary.withOpacity(0.60),
+        AppColors.primary.withOpacity(0.18),
         Colors.transparent,
       ],
-      stops: [
+      stops: const [
         0.0,
         0.35,
         0.70,
@@ -794,7 +799,7 @@ class _AmbientAtmospherePainter extends CustomPainter {
     final brGlowPaint = Paint()
       ..shader = brShader
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 6.5
+      ..strokeWidth = 5.5
       ..strokeCap = StrokeCap.round
       ..maskFilter = const MaskFilter.blur(
         BlurStyle.normal,
@@ -804,7 +809,7 @@ class _AmbientAtmospherePainter extends CustomPainter {
     final brCorePaint = Paint()
       ..shader = brShader
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
+      ..strokeWidth = 1.8
       ..strokeCap = StrokeCap.round
       ..maskFilter = const MaskFilter.blur(
         BlurStyle.solid,
