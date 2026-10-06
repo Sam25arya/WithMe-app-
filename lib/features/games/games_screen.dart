@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
-<<<<<<< HEAD
 import 'tic_tac_toe_screen.dart';
 import 'emoji_guess_screen.dart';
-
-=======
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
 import '../../core/constants/app_colors.dart';
 
 class GamesScreen extends StatelessWidget {
@@ -15,14 +11,11 @@ class GamesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final games = [
       {
-<<<<<<< HEAD
         'title': 'Tic-Tac-Toe',
         'description': 'Challenge a friend to a classic match.',
         'icon': Icons.grid_3x3_rounded,
       },
       {
-=======
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
         'title': '20 Questions',
         'description': 'Think of something and let With Me guess it!',
         'icon': Icons.help_outline_rounded,
@@ -94,14 +87,10 @@ class GamesScreen extends StatelessWidget {
 
             const Text(
               'Choose a game to play with With Me.',
-<<<<<<< HEAD
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 15),
-=======
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 15,
               ),
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
             ),
 
             const SizedBox(height: 28),
@@ -109,12 +98,8 @@ class GamesScreen extends StatelessWidget {
             Expanded(
               child: GridView.builder(
                 itemCount: games.length,
-<<<<<<< HEAD
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-=======
                 gridDelegate:
                     const SliverGridDelegateWithMaxCrossAxisExtent(
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                   maxCrossAxisExtent: 350,
                   mainAxisExtent: 170,
                   crossAxisSpacing: 16,
@@ -147,35 +132,23 @@ class GamesScreen extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(18),
       onTap: () {
-<<<<<<< HEAD
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) {
-        if (title == 'Tic-Tac-Toe') {
-          return const TicTacToeScreen();
-        }
-
-        if (title == 'Emoji Guess') {
-          return const EmojiGuessScreen();
-        }
-
-        return GamePlayScreen(gameTitle: title);
-      },
-    ),
-  );
-},
-=======
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => GamePlayScreen(
-              gameTitle: title,
-            ),
+            builder: (context) {
+              if (title == 'Tic-Tac-Toe') {
+                return const TicTacToeScreen();
+              }
+
+              if (title == 'Emoji Guess') {
+                return const EmojiGuessScreen();
+              }
+
+              return GamePlayScreen(gameTitle: title);
+            },
           ),
         );
       },
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -194,15 +167,11 @@ class GamesScreen extends StatelessWidget {
                 color: AppColors.accentRed.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(16),
               ),
-<<<<<<< HEAD
-              child: Icon(icon, color: AppColors.accentRed, size: 28),
-=======
               child: Icon(
                 icon,
                 color: AppColors.accentRed,
                 size: 28,
               ),
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
             ),
 
             const SizedBox(width: 16),
@@ -254,14 +223,10 @@ class GamesScreen extends StatelessWidget {
 class GamePlayScreen extends StatelessWidget {
   final String gameTitle;
 
-<<<<<<< HEAD
-  const GamePlayScreen({super.key, required this.gameTitle});
-=======
   const GamePlayScreen({
     super.key,
     required this.gameTitle,
   });
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
 
   @override
   Widget build(BuildContext context) {
@@ -316,14 +281,10 @@ class GamePlayScreen extends StatelessWidget {
               const Text(
                 'Game screen coming next 🎮',
                 textAlign: TextAlign.center,
-<<<<<<< HEAD
-                style: TextStyle(color: AppColors.textSecondary, fontSize: 15),
-=======
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 15,
                 ),
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
               ),
             ],
           ),
@@ -331,8 +292,4 @@ class GamePlayScreen extends StatelessWidget {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a

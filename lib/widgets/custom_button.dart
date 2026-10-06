@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import '../core/constants/app_colors.dart';
 
-/// CustomButton is a reusable, premium button styled according to the With Me design system.
-/// Supports normal state, loading spinner state, and custom background colors.
+/// CustomButton is a reusable, premium button styled according to
+/// the With Me design system.
+///
+/// Supports:
+/// - Normal state
+/// - Loading spinner state
+/// - Custom background colors
+/// - Custom text colors
+/// - Optional leading icon
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -38,15 +45,12 @@ class CustomButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
           foregroundColor: fgColor,
-<<<<<<< HEAD
+
+          // Modern Flutter API
           disabledBackgroundColor: bgColor.withValues(alpha: 0.6),
           elevation: 4,
           shadowColor: bgColor.withValues(alpha: 0.4),
-=======
-          disabledBackgroundColor: bgColor.withOpacity(0.6),
-          elevation: 4,
-          shadowColor: bgColor.withOpacity(0.4),
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
+
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -65,7 +69,11 @@ class CustomButton extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (icon != null) ...[
-                    Icon(icon, size: 20, color: fgColor),
+                    Icon(
+                      icon,
+                      size: 20,
+                      color: fgColor,
+                    ),
                     const SizedBox(width: 10),
                   ],
                   Text(

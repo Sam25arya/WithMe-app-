@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
-<<<<<<< HEAD
 import '../games/games_screen.dart';
-
-=======
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -270,12 +266,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                 const SizedBox(height: 18),
 
-                // ─────────────────────────────────────────────────────────
                 // GAMES
-                // Only the Games section is kept here.
-                // Your team can add games underneath later.
-                // ─────────────────────────────────────────────────────────
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
@@ -292,26 +283,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(height: 8),
 
                 _sidebarItem(
-<<<<<<< HEAD
-  icon: Icons.sports_esports_outlined,
-  title: 'Games',
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const GamesScreen(),
-      ),
-    );
-  },
-  compact: true,
-),
-=======
                   icon: Icons.sports_esports_outlined,
                   title: 'Games',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GamesScreen(),
+                      ),
+                    );
+                  },
                   compact: true,
                 ),
->>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
               ],
             ),
           ),

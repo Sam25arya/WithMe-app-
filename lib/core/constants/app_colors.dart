@@ -1,66 +1,83 @@
 import 'package:flutter/material.dart';
 
-/// AppColors defines the brand palette for "With Me".
+/// AppColors defines the official color palette for the With Me app.
 ///
-/// Theme: Midnight Blue + Soft Lavender
+/// Theme:
+/// - Midnight Blue
+/// - Soft Lavender
+/// - Subtle Indigo
+/// - Warm light text
 class AppColors {
-  AppColors._();
+  // ===========================================================================
+  // BACKGROUND
+  // ===========================================================================
 
-  // 🌑 Main Background: Deep Midnight Blue
-  static const Color background = Color(0xFF080B18);
+  /// Main app background.
+  static const Color background = Color(0xFF0B1020);
 
-  // 🌌 Gradient Middle: Rich Midnight Blue
-  static const Color gradientMid = Color(0xFF10162A);
+  /// Gradient middle tone.
+  static const Color gradientMid = Color(0xFF151B32);
 
-  // 💜 Soft Lavender Borders / Glow
-  static const Color indigoSlate = Color(0xFF252A46);
+  // ===========================================================================
+  // SURFACES
+  // ===========================================================================
 
-  // 🟦 Main Surface
-  static const Color surface = Color(0xFF12182A);
+  /// Main cards and elevated surfaces.
+  static const Color surface = Color(0xFF151B32);
 
-  // ✨ Lighter Surface
-  static const Color surfaceLight = Color(0xFF1A2138);
+  /// Lighter card / input surface.
+  static const Color surfaceLight = Color(0xFF232A46);
 
-  // 💜 Main With Me Accent: Soft Lavender
-  static const Color accentRed = Color(0xFF8B7CFF);
+  /// Indigo slate used for subtle borders and background effects.
+  static const Color indigoSlate = Color(0xFF2A3150);
 
-  // 💜 Companion Lavender
-  static const Color neonPink = Color(0xFFA78BFA);
+  // ===========================================================================
+  // PRIMARY — SOFT LAVENDER
+  // ===========================================================================
 
-  // ✨ Light Lavender
-  static const Color hotPinkMagenta = Color(0xFFB8A9FF);
+  /// Main brand accent.
+  static const Color primary = Color(0xFFA78BFA);
 
-  // 🌸 Soft Pink-Lavender
-  static const Color pinkishPurple = Color(0xFFC4B5FD);
+  /// Lighter version of the primary lavender.
+  static const Color primaryLight = Color(0xFFC4B5FD);
 
-  // 🔮 Deep Lavender
-  static const Color neonMagenta = Color(0xFF9B8AFB);
+  // ===========================================================================
+  // EXISTING ACCENTS
+  // ===========================================================================
 
-  // 💜 Violet
-  static const Color electricViolet = Color(0xFF8B5CF6);
+  static const Color accentRed = Color(0xFFE52535);
 
-  // 🪻 Purple
-  static const Color electricPurple = Color(0xFF9F8CFF);
+  static const Color neonPink = Color(0xFFF72585);
 
-  // 🤍 Logo / Heading: Soft Warm White
-  static const Color textPrimary = Color(0xFFF8F7FF);
+  static const Color hotPinkMagenta = Color(0xFFE01A88);
 
-  // 🩶 Secondary Text
-  static const Color textSecondary = Color(0xFFA7A9B8);
+  static const Color pinkishPurple = Color(0xFFD946EF);
 
-  // 🌫 Muted Text
-  static const Color textMuted = Color(0xFF73788C);
+  static const Color neonMagenta = Color(0xFFC026D3);
 
-  // ✨ Highlight
-  static const Color highlightGold = Color(0xFFD6C7FF);
+  static const Color electricViolet = Color(0xFF7C3AED);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // Utility Colors
-  // ─────────────────────────────────────────────────────────────────────────
+  static const Color electricPurple = Color(0xFF9B59B6);
 
-  static const Color divider = Color(0xFF252A46);
+  // ===========================================================================
+  // TEXT
+  // ===========================================================================
 
-  static const Color error = Color(0xFFFF6B81);
+  static const Color textPrimary = Color(0xFFF5F1E8);
 
-  static const Color success = Color(0xFF81D8B0);
+  static const Color textSecondary = Color(0xFFB8BECC);
+
+  static const Color textMuted = Color(0xFF768087);
+
+  static const Color highlightGold = Color(0xFFD6B56D);
+
+  // ===========================================================================
+  // SYSTEM
+  // ===========================================================================
+
+  static const Color divider = Color(0xFF242D4A);
+
+  static const Color error = Color(0xFFE52535);
+
+  static const Color success = Color(0xFF81C784);
 }
