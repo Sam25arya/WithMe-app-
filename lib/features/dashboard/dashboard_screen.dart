@@ -12,99 +12,83 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final ScrollController _chatScrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
+
+  final List<_ChatMessage> _messages = [
+    const _ChatMessage(
+      text: 'Hey! I’m With Me 👋\nHow are you feeling today?',
+      isUser: false,
+    ),
+  ];
 
   bool _isSidebarOpen = true;
-  bool _isSending = false;
-
-  final List<_ChatMessage> _messages = [];
 
   @override
   void dispose() {
     _messageController.dispose();
-    _chatScrollController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
   // SEND MESSAGE
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
 
-  Future<void> _sendMessage() async {
-    final text = _messageController.text.trim();
+  void _sendMessage() {
+    final message = _messageController.text.trim();
 
-    if (text.isEmpty || _isSending) return;
+    if (message.isEmpty) return;
 
     setState(() {
       _messages.add(
         _ChatMessage(
-          text: text,
+          text: message,
           isUser: true,
         ),
       );
 
       _messageController.clear();
-      _isSending = true;
     });
 
     _scrollToBottom();
 
-    // TEMPORARY AI RESPONSE
-    // Later this will be replaced with your HTTPS AI API.
+    // Temporary AI response.
+    // Later this will connect to your AI backend.
+    Future.delayed(const Duration(milliseconds: 700), () {
+      if (!mounted) return;
 
-    await Future.delayed(const Duration(milliseconds: 900));
+      setState(() {
+        _messages.add(
+          const _ChatMessage(
+            text: 'I’m here with you. Tell me more 💜',
+            isUser: false,
+          ),
+        );
+      });
 
-    if (!mounted) return;
-
-    String response;
-
-    if (text.toLowerCase().contains('hello') ||
-        text.toLowerCase().contains('hi')) {
-      response = "Hey! 👋 I'm With Me. It's nice to talk with you.";
-    } else if (text.toLowerCase().contains('sad') ||
-        text.toLowerCase().contains('bad')) {
-      response =
-          "I'm here with you. 💙 You can talk to me about what's bothering you.";
-    } else if (text.toLowerCase().contains('bored')) {
-      response =
-          "Bored already? 😄 We can chat, play a game, or I can give you a little challenge!";
-    } else {
-      response = "I'm listening. 💙 Tell me more about that.";
-    }
-
-    setState(() {
-      _messages.add(
-        _ChatMessage(
-          text: response,
-          isUser: false,
-        ),
-      );
-
-      _isSending = false;
+      _scrollToBottom();
     });
-
-    _scrollToBottom();
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // SCROLL TO BOTTOM
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
+  // SCROLL
+  // ─────────────────────────────────────────────
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_chatScrollController.hasClients) return;
+      if (!_scrollController.hasClients) return;
 
-      _chatScrollController.animateTo(
-        _chatScrollController.position.maxScrollExtent,
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
     });
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
   // CLEAR CHAT
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
 
   void _clearChat() {
     setState(() {
@@ -112,9 +96,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // BUILD
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
+  // OPEN GAMES
+  // ─────────────────────────────────────────────
+
+  void _openGames() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const GamesScreen(),
+      ),
+    );
+  }
+
+  // ─────────────────────────────────────────────
+  // MAIN BUILD
+  // ─────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -123,25 +120,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: SafeArea(
         child: Row(
           children: [
-            // SIDEBAR
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              curve: Curves.easeInOut,
-              width: _isSidebarOpen ? 270 : 0,
-              child: _isSidebarOpen
-                  ? _buildSidebar()
-                  : const SizedBox.shrink(),
-            ),
+            if (_isSidebarOpen) _buildSidebar(),
 
-            // MAIN AREA
             Expanded(
               child: Column(
                 children: [
                   _buildTopBar(),
+
                   Expanded(
                     child: _buildChatArea(),
                   ),
-                  _buildChatInput(),
+
+                  _buildMessageInput(),
                 ],
               ),
             ),
@@ -151,195 +141,256 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
   // SIDEBAR
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
 
   Widget _buildSidebar() {
     return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF0A1020),
+      width: 250,
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
         border: Border(
           right: BorderSide(
-            color: AppColors.textSecondary.withValues(alpha: 0.15),
+            color: AppColors.divider,
+            width: 1,
           ),
         ),
       ),
       child: Column(
         children: [
-          // Sidebar header
+          // ─────────────────────────────────────
+          // WITH ME LOGO
+          // ─────────────────────────────────────
+
           Padding(
-            padding: const EdgeInsets.fromLTRB(18, 18, 12, 18),
+            padding: const EdgeInsets.fromLTRB(
+              18,
+              20,
+              18,
+              22,
+            ),
             child: Row(
               children: [
                 Container(
-                  width: 42,
-                  height: 42,
+                  width: 46,
+                  height: 46,
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: AppColors.accentRed.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.surfaceLight,
+                    borderRadius: BorderRadius.circular(13),
+                    border: Border.all(
+                      color: AppColors.primary.withValues(
+                        alpha: 0.28,
+                      ),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(
+                          alpha: 0.08,
+                        ),
+                        blurRadius: 12,
+                        spreadRadius: 1,
+                      ),
+                    ],
                   ),
-                  child: const Icon(
-                    Icons.auto_awesome,
-                    color: AppColors.accentRed,
-                    size: 22,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(9),
+                    child: Image.asset(
+                      'assets/images/withme_logo.jpeg',
+                      fit: BoxFit.contain,
+                      errorBuilder: (
+                        context,
+                        error,
+                        stackTrace,
+                      ) {
+                        return const Icon(
+                          Icons.auto_awesome_rounded,
+                          color: AppColors.primary,
+                          size: 24,
+                        );
+                      },
+                    ),
                   ),
                 ),
+
                 const SizedBox(width: 12),
+
                 const Expanded(
                   child: Text(
                     'With Me',
                     style: TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  tooltip: 'Close sidebar',
-                  onPressed: () {
-                    setState(() {
-                      _isSidebarOpen = false;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.close_rounded,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Divider(
-            color: AppColors.textSecondary.withValues(alpha: 0.12),
-            height: 1,
-          ),
-
-          // Sidebar menu
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 16,
-              ),
-              children: [
-                _sidebarItem(
-                  icon: Icons.home_rounded,
-                  title: 'Home',
-                  selected: true,
-                  onTap: () {},
-                ),
-
-                const SizedBox(height: 5),
-
-                _sidebarItem(
-                  icon: Icons.chat_bubble_outline_rounded,
-                  title: 'All Chats',
-                  onTap: () {},
-                ),
-
-                _sidebarItem(
-                  icon: Icons.history_rounded,
-                  title: 'Recents',
-                  onTap: () {},
-                ),
-
-                _sidebarItem(
-                  icon: Icons.push_pin_outlined,
-                  title: 'Pinned',
-                  onTap: () {},
-                ),
-
-                _sidebarItem(
-                  icon: Icons.chat_outlined,
-                  title: 'Temporary Chat',
-                  onTap: _clearChat,
-                ),
-
-                _sidebarItem(
-                  icon: Icons.mood_rounded,
-                  title: 'Mood Check',
-                  onTap: () {},
-                ),
-
-                const SizedBox(height: 18),
-
-                // GAMES
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    'GAMES',
-                    style: TextStyle(
-                      color: AppColors.highlightGold,
-                      fontSize: 11,
+                      fontSize: 19,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: 1.2,
                     ),
                   ),
-                ),
-
-                const SizedBox(height: 8),
-
-                _sidebarItem(
-                  icon: Icons.sports_esports_outlined,
-                  title: 'Games',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const GamesScreen(),
-                      ),
-                    );
-                  },
-                  compact: true,
                 ),
               ],
             ),
           ),
 
-          // User area
-          Container(
-            padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: AppColors.textSecondary.withValues(alpha: 0.12),
+          // ─────────────────────────────────────
+          // NEW CHAT
+          // ─────────────────────────────────────
+
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              height: 46,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    _messages.clear();
+                  });
+                },
+                icon: const Icon(
+                  Icons.add_rounded,
+                  size: 20,
+                ),
+                label: const Text('New Chat'),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.primaryLight,
+                  side: BorderSide(
+                    color: AppColors.primary.withValues(
+                      alpha: 0.35,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(13),
+                  ),
                 ),
               ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          // ─────────────────────────────────────
+          // CHAT
+          // ─────────────────────────────────────
+
+          _sidebarItem(
+            icon: Icons.chat_bubble_outline_rounded,
+            title: 'Chat',
+            selected: true,
+            onTap: () {},
+          ),
+
+          // ─────────────────────────────────────
+          // GAMES
+          // ─────────────────────────────────────
+
+          _sidebarItem(
+            icon: Icons.sports_esports_outlined,
+            title: 'Games',
+            onTap: _openGames,
+          ),
+
+          // ─────────────────────────────────────
+          // MEMORIES
+          // ─────────────────────────────────────
+
+          _sidebarItem(
+            icon: Icons.auto_awesome_outlined,
+            title: 'Memories',
+            onTap: () {
+              _showComingSoon('Memories');
+            },
+          ),
+
+          // ─────────────────────────────────────
+          // CHAT HISTORY
+          // ─────────────────────────────────────
+
+          _sidebarItem(
+            icon: Icons.history_rounded,
+            title: 'Chat History',
+            onTap: () {
+              _showComingSoon('Chat History');
+            },
+          ),
+
+          const Spacer(),
+
+          // ─────────────────────────────────────
+          // NOTIFICATIONS
+          // ─────────────────────────────────────
+
+          _sidebarItem(
+            icon: Icons.notifications_none_rounded,
+            title: 'Notifications',
+            onTap: () {
+              _showComingSoon('Notifications');
+            },
+          ),
+
+          // ─────────────────────────────────────
+          // SETTINGS
+          // ─────────────────────────────────────
+
+          _sidebarItem(
+            icon: Icons.settings_outlined,
+            title: 'Settings',
+            onTap: () {
+              _showComingSoon('Settings');
+            },
+          ),
+
+          // ─────────────────────────────────────
+          // PROFILE
+          // ─────────────────────────────────────
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              18,
+              10,
+              18,
+              18,
             ),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 19,
-                  backgroundColor:
-                      AppColors.accentRed.withValues(alpha: 0.15),
+                Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(
+                      alpha: 0.14,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
                   child: const Icon(
                     Icons.person_outline_rounded,
-                    color: AppColors.textPrimary,
-                    size: 20,
+                    color: AppColors.primaryLight,
+                    size: 21,
                   ),
                 ),
+
                 const SizedBox(width: 10),
+
                 const Expanded(
                   child: Text(
-                    'You',
+                    'My Profile',
                     style: TextStyle(
-                      color: AppColors.textPrimary,
+                      color: AppColors.textSecondary,
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
+
                 IconButton(
-                  tooltip: 'Settings',
-                  onPressed: () {},
+                  onPressed: () {
+                    _showComingSoon('Profile');
+                  },
                   icon: const Icon(
-                    Icons.settings_outlined,
-                    color: AppColors.textSecondary,
-                    size: 20,
+                    Icons.more_horiz_rounded,
+                    color: AppColors.textMuted,
                   ),
+                  tooltip: 'More',
                 ),
               ],
             ),
@@ -349,53 +400,56 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
   // SIDEBAR ITEM
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
 
   Widget _sidebarItem({
     required IconData icon,
     required String title,
     required VoidCallback onTap,
     bool selected = false,
-    bool compact = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 2,
+      ),
       child: Material(
         color: selected
-            ? AppColors.accentRed.withValues(alpha: 0.12)
+            ? AppColors.primary.withValues(alpha: 0.12)
             : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
           onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: compact ? 8 : 10,
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            height: 46,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 13,
             ),
             child: Row(
               children: [
                 Icon(
                   icon,
-                  size: compact ? 18 : 20,
+                  size: 21,
                   color: selected
-                      ? AppColors.accentRed
+                      ? AppColors.primary
                       : AppColors.textSecondary,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      color: selected
-                          ? AppColors.textPrimary
-                          : AppColors.textSecondary,
-                      fontSize: compact ? 13 : 14,
-                      fontWeight:
-                          selected ? FontWeight.w600 : FontWeight.w400,
-                    ),
+
+                const SizedBox(width: 13),
+
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: selected
+                        ? AppColors.textPrimary
+                        : AppColors.textSecondary,
+                    fontSize: 14,
+                    fontWeight: selected
+                        ? FontWeight.w600
+                        : FontWeight.w400,
                   ),
                 ),
               ],
@@ -406,39 +460,82 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
   // TOP BAR
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
 
   Widget _buildTopBar() {
     return Container(
-      height: 68,
-      padding: const EdgeInsets.symmetric(horizontal: 18),
-      decoration: BoxDecoration(
+      height: 70,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+      ),
+      decoration: const BoxDecoration(
         color: AppColors.background,
         border: Border(
           bottom: BorderSide(
-            color: AppColors.textSecondary.withValues(alpha: 0.12),
+            color: AppColors.divider,
+            width: 1,
           ),
         ),
       ),
       child: Row(
         children: [
-          if (!_isSidebarOpen)
-            IconButton(
-              tooltip: 'Open sidebar',
-              onPressed: () {
-                setState(() {
-                  _isSidebarOpen = true;
-                });
-              },
-              icon: const Icon(
-                Icons.menu_rounded,
-                color: AppColors.textPrimary,
+          // MENU BUTTON
+
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _isSidebarOpen = !_isSidebarOpen;
+              });
+            },
+            icon: Icon(
+              _isSidebarOpen
+                  ? Icons.menu_open_rounded
+                  : Icons.menu_rounded,
+              color: AppColors.textSecondary,
+            ),
+            tooltip: 'Menu',
+          ),
+
+          const SizedBox(width: 8),
+
+          // SMALL LOGO
+
+          Container(
+            width: 34,
+            height: 34,
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: AppColors.primary.withValues(
+                  alpha: 0.20,
+                ),
               ),
             ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(7),
+              child: Image.asset(
+                'assets/images/withme_logo.jpeg',
+                fit: BoxFit.contain,
+                errorBuilder: (
+                  context,
+                  error,
+                  stackTrace,
+                ) {
+                  return const Icon(
+                    Icons.auto_awesome_rounded,
+                    color: AppColors.primary,
+                    size: 18,
+                  );
+                },
+              ),
+            ),
+          ),
 
-          if (!_isSidebarOpen) const SizedBox(width: 8),
+          const SizedBox(width: 10),
 
           const Text(
             'With Me',
@@ -451,58 +548,77 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
           const Spacer(),
 
-          // Search
+          // ROBOT CONNECTION
+
           Container(
-            width: 220,
-            height: 40,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 8,
+            ),
             decoration: BoxDecoration(
-              color: const Color(0xFF101827),
-              borderRadius: BorderRadius.circular(12),
+              color: AppColors.success.withValues(
+                alpha: 0.08,
+              ),
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: AppColors.textSecondary.withValues(alpha: 0.18),
+                color: AppColors.success.withValues(
+                  alpha: 0.18,
+                ),
               ),
             ),
-            child: const TextField(
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 13,
-              ),
-              decoration: InputDecoration(
-                hintText: 'Search',
-                hintStyle: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 13,
+            child: const Row(
+              children: [
+                Icon(
+                  Icons.circle,
+                  color: AppColors.success,
+                  size: 8,
                 ),
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                  color: AppColors.textSecondary,
-                  size: 19,
+                SizedBox(width: 7),
+                Text(
+                  'Robot connected',
+                  style: TextStyle(
+                    color: AppColors.success,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(vertical: 10),
-              ),
+              ],
             ),
           ),
 
           const SizedBox(width: 10),
 
+          // NOTIFICATIONS
+
           IconButton(
-            tooltip: 'Notifications',
-            onPressed: () {},
+            onPressed: () {
+              _showComingSoon('Notifications');
+            },
             icon: const Icon(
               Icons.notifications_none_rounded,
               color: AppColors.textSecondary,
             ),
+            tooltip: 'Notifications',
           ),
 
-          IconButton(
-            tooltip: 'More',
-            onPressed: () {
-              _showMoreMenu(context);
-            },
-            icon: const Icon(
-              Icons.more_vert_rounded,
+          const SizedBox(width: 4),
+
+          // PROFILE ICON
+
+          Container(
+            width: 38,
+            height: 38,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceLight,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.indigoSlate,
+              ),
+            ),
+            child: const Icon(
+              Icons.person_outline_rounded,
               color: AppColors.textSecondary,
+              size: 21,
             ),
           ),
         ],
@@ -510,100 +626,85 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
   // CHAT AREA
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
 
   Widget _buildChatArea() {
-    if (_messages.isEmpty) {
-      return _buildEmptyChat();
-    }
-
-    return ListView.builder(
-      controller: _chatScrollController,
-      padding: const EdgeInsets.fromLTRB(24, 30, 24, 30),
-      itemCount: _messages.length,
-      itemBuilder: (context, index) {
-        final message = _messages[index];
-
-        return _buildMessageBubble(message);
-      },
+    return Container(
+      width: double.infinity,
+      color: AppColors.background,
+      child: _messages.isEmpty
+          ? _buildEmptyChat()
+          : ListView.builder(
+              controller: _scrollController,
+              padding: const EdgeInsets.fromLTRB(
+                24,
+                30,
+                24,
+                30,
+              ),
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                return _buildMessage(
+                  _messages[index],
+                );
+              },
+            ),
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
   // EMPTY CHAT
-  // ─────────────────────────────────────────────────────────────────────────
+  //
+  // NO LOGO HERE
+  // ─────────────────────────────────────────────
 
   Widget _buildEmptyChat() {
     return Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 82,
-              height: 82,
-              decoration: BoxDecoration(
-                color: AppColors.accentRed.withValues(alpha: 0.10),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.accentRed.withValues(alpha: 0.25),
-                ),
-              ),
-              child: const Icon(
-                Icons.auto_awesome_rounded,
-                color: AppColors.accentRed,
-                size: 38,
-              ),
-            ),
-
-            const SizedBox(height: 22),
-
             const Text(
-              'Good to see you 👋',
+              'What’s on your mind?',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.textPrimary,
                 fontSize: 25,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w700,
               ),
             ),
 
             const SizedBox(height: 10),
 
             const Text(
-              'What would you like to talk about?',
+              'Talk to With Me about anything.\n'
+              'I’m here to listen, help and keep you company.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.textSecondary,
-                fontSize: 15,
+                fontSize: 14,
+                height: 1.6,
               ),
             ),
 
             const SizedBox(height: 28),
 
             Wrap(
-              alignment: WrapAlignment.center,
               spacing: 10,
               runSpacing: 10,
+              alignment: WrapAlignment.center,
               children: [
-                _suggestionButton(
-                  '💬 Talk with me',
-                  'Tell me something about your day.',
+                _suggestionChip(
+                  'How was my day?',
                 ),
-                _suggestionButton(
-                  '😂 Make me laugh',
-                  'Tell me something funny.',
+                _suggestionChip(
+                  'Tell me something fun',
                 ),
-                _suggestionButton(
-                  "🎮 Let's play",
-                  'I want to play a game.',
-                ),
-                _suggestionButton(
-                  '💙 I need to talk',
-                  'I want to talk about how I feel.',
+                _suggestionChip(
+                  'I need motivation',
                 ),
               ],
             ),
@@ -613,69 +714,62 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // SUGGESTION BUTTON
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
+  // SUGGESTION CHIP
+  // ─────────────────────────────────────────────
 
-  Widget _suggestionButton(String title, String message) {
-    return OutlinedButton(
-      onPressed: () {
-        _messageController.text = message;
+  Widget _suggestionChip(String text) {
+    return InkWell(
+      onTap: () {
+        _messageController.text = text;
         _sendMessage();
       },
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.textPrimary,
-        side: BorderSide(
-          color: AppColors.textSecondary.withValues(alpha: 0.25),
-        ),
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
         padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
+          horizontal: 15,
+          vertical: 10,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: AppColors.indigoSlate,
+          ),
         ),
-      ),
-      child: Text(
-        title,
-        style: const TextStyle(fontSize: 13),
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 13,
+          ),
+        ),
       ),
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // MESSAGE BUBBLE
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
+  // MESSAGE
+  // ─────────────────────────────────────────────
 
-  Widget _buildMessageBubble(_ChatMessage message) {
+  Widget _buildMessage(_ChatMessage message) {
+    final bool isUser = message.isUser;
+
     return Align(
-      alignment:
-          message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isUser
+          ? Alignment.centerRight
+          : Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 18),
+        padding: const EdgeInsets.only(
+          bottom: 18,
+        ),
         child: Row(
-          mainAxisAlignment: message.isUser
+          mainAxisAlignment: isUser
               ? MainAxisAlignment.end
               : MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
           children: [
-            if (!message.isUser) ...[
-              Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  color: AppColors.accentRed.withValues(alpha: 0.12),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.auto_awesome_rounded,
-                  color: AppColors.accentRed,
-                  size: 17,
-                ),
-              ),
-              const SizedBox(width: 10),
-            ],
-
             Flexible(
               child: Container(
                 constraints: const BoxConstraints(
@@ -686,23 +780,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   vertical: 13,
                 ),
                 decoration: BoxDecoration(
-                  color: message.isUser
-                      ? AppColors.accentRed
-                      : const Color(0xFF101827),
-                  borderRadius: BorderRadius.circular(17),
-                  border: message.isUser
-                      ? null
-                      : Border.all(
-                          color: AppColors.textSecondary
-                              .withValues(alpha: 0.15),
-                        ),
+                  color: isUser
+                      ? AppColors.primary.withValues(
+                          alpha: 0.15,
+                        )
+                      : AppColors.surface,
+                  borderRadius: BorderRadius.only(
+                    topLeft: const Radius.circular(17),
+                    topRight: const Radius.circular(17),
+                    bottomLeft: Radius.circular(
+                      isUser ? 17 : 5,
+                    ),
+                    bottomRight: Radius.circular(
+                      isUser ? 5 : 17,
+                    ),
+                  ),
+                  border: Border.all(
+                    color: isUser
+                        ? AppColors.primary.withValues(
+                            alpha: 0.20,
+                          )
+                        : AppColors.indigoSlate,
+                  ),
                 ),
                 child: Text(
                   message.text,
-                  style: TextStyle(
-                    color: message.isUser
-                        ? Colors.white
-                        : AppColors.textPrimary,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
                     fontSize: 14,
                     height: 1.5,
                   ),
@@ -715,191 +819,170 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // CHAT INPUT
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
+  // MESSAGE INPUT
+  // ─────────────────────────────────────────────
 
-  Widget _buildChatInput() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(22, 10, 22, 18),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(
-          maxWidth: 900,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF101827),
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: AppColors.textSecondary.withValues(alpha: 0.22),
-            ),
+  Widget _buildMessageInput() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(
+        20,
+        12,
+        20,
+        18,
+      ),
+      decoration: const BoxDecoration(
+        color: AppColors.background,
+        border: Border(
+          top: BorderSide(
+            color: AppColors.divider,
+            width: 1,
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
             children: [
-              const SizedBox(width: 8),
-
-              IconButton(
-                tooltip: 'Attach',
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.add_rounded,
-                  color: AppColors.textSecondary,
-                ),
-              ),
+              // TEXT FIELD
 
               Expanded(
-                child: TextField(
-                  controller: _messageController,
-                  minLines: 1,
-                  maxLines: 5,
-                  textInputAction: TextInputAction.newline,
-                  onSubmitted: (_) => _sendMessage(),
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 14,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(
+                      18,
+                    ),
+                    border: Border.all(
+                      color: AppColors.indigoSlate,
+                    ),
                   ),
-                  decoration: const InputDecoration(
-                    hintText: 'Write something...',
-                    hintStyle: TextStyle(
-                      color: AppColors.textSecondary,
+                  child: TextField(
+                    controller: _messageController,
+                    minLines: 1,
+                    maxLines: 5,
+                    textInputAction:
+                        TextInputAction.newline,
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
                       fontSize: 14,
                     ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 15,
+                    decoration:
+                        const InputDecoration(
+                      hintText: 'Message With Me...',
+                      hintStyle: TextStyle(
+                        color: AppColors.textMuted,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding:
+                          EdgeInsets.symmetric(
+                        horizontal: 17,
+                        vertical: 14,
+                      ),
                     ),
+                    onSubmitted: (_) {
+                      _sendMessage();
+                    },
                   ),
                 ),
               ),
 
-              IconButton(
-                tooltip: 'Voice',
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Voice input will be connected soon.',
-                      ),
+              const SizedBox(width: 10),
+
+              // SEND BUTTON
+
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius:
+                      BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary
+                          .withValues(alpha: 0.18),
+                      blurRadius: 12,
+                      spreadRadius: 1,
                     ),
-                  );
-                },
-                icon: const Icon(
-                  Icons.mic_none_rounded,
-                  color: AppColors.textSecondary,
+                  ],
+                ),
+                child: IconButton(
+                  onPressed: _sendMessage,
+                  icon: const Icon(
+                    Icons.arrow_upward_rounded,
+                    color: AppColors.background,
+                    size: 23,
+                  ),
+                  tooltip: 'Send',
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 8),
+
+          // FOOTER
+
+          Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  'With Me can make mistakes. Check important information.',
+                  style: TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 10,
+                  ),
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 7,
-                  bottom: 7,
+              TextButton.icon(
+                onPressed: _clearChat,
+                icon: const Icon(
+                  Icons.delete_outline_rounded,
+                  size: 15,
                 ),
-                child: Material(
-                  color: AppColors.accentRed,
-                  borderRadius: BorderRadius.circular(12),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: _isSending ? null : _sendMessage,
-                    child: SizedBox(
-                      width: 43,
-                      height: 43,
-                      child: Center(
-                        child: _isSending
-                            ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : const Icon(
-                                Icons.arrow_upward_rounded,
-                                color: Colors.white,
-                                size: 21,
-                              ),
-                      ),
-                    ),
+                label: const Text(
+                  'Clear chat',
+                  style: TextStyle(
+                    fontSize: 11,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  foregroundColor:
+                      AppColors.textMuted,
+                  padding:
+                      const EdgeInsets.symmetric(
+                    horizontal: 8,
                   ),
                 ),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // MORE MENU
-  // ─────────────────────────────────────────────────────────────────────────
+  // ─────────────────────────────────────────────
+  // COMING SOON
+  // ─────────────────────────────────────────────
 
-  void _showMoreMenu(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF080B18),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
+  void _showComingSoon(String feature) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          '$feature is coming soon 💜',
         ),
+        duration: const Duration(seconds: 2),
       ),
-      builder: (context) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(
-                  Icons.delete_outline_rounded,
-                  color: AppColors.textSecondary,
-                ),
-                title: const Text(
-                  'Clear current chat',
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  _clearChat();
-                },
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.logout_rounded,
-                  color: AppColors.accentRed,
-                ),
-                title: const Text(
-                  'Logout',
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-
-                  ScaffoldMessenger.of(this.context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Logout will be connected to Firebase Auth.',
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────
 // CHAT MESSAGE MODEL
-// ─────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────
 
 class _ChatMessage {
   final String text;

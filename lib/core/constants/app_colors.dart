@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// AppColors defines the official color palette for the With Me app.
+/// Official color palette for the With Me app.
 ///
 /// Theme:
 /// - Midnight Blue
@@ -42,33 +42,37 @@ class AppColors {
   static const Color primaryLight = Color(0xFFC4B5FD);
 
   // ===========================================================================
-  // EXISTING ACCENTS
+  // APP ACCENT
   // ===========================================================================
 
-  static const Color accentRed = Color(0xFFE52535);
+  /// Main accent used throughout the existing app UI.
+  ///
+  /// Kept under the old name so existing screens automatically
+  /// switch from red to the new lavender palette.
+  static const Color accentRed = Color(0xFFA78BFA);
 
+  /// Additional pink/purple shades available for future UI elements.
   static const Color neonPink = Color(0xFFF72585);
-
   static const Color hotPinkMagenta = Color(0xFFE01A88);
-
   static const Color pinkishPurple = Color(0xFFD946EF);
-
   static const Color neonMagenta = Color(0xFFC026D3);
-
   static const Color electricViolet = Color(0xFF7C3AED);
-
   static const Color electricPurple = Color(0xFF9B59B6);
 
   // ===========================================================================
   // TEXT
   // ===========================================================================
 
+  /// Main warm white text.
   static const Color textPrimary = Color(0xFFF5F1E8);
 
+  /// Secondary text.
   static const Color textSecondary = Color(0xFFB8BECC);
 
+  /// Muted / disabled text.
   static const Color textMuted = Color(0xFF768087);
 
+  /// Small warm highlight.
   static const Color highlightGold = Color(0xFFD6B56D);
 
   // ===========================================================================
@@ -77,7 +81,8 @@ class AppColors {
 
   static const Color divider = Color(0xFF242D4A);
 
-  static const Color error = Color(0xFFE52535);
+  /// Soft error red — only for actual errors.
+  static const Color error = Color(0xFFE57373);
 
   static const Color success = Color(0xFF81C784);
 }

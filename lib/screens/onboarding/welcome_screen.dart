@@ -18,99 +18,141 @@ class WelcomeScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // --------------------------------------------------
-              // LOGO
-              // --------------------------------------------------
-              Image.asset(
-                'assets/images/withme_logo.png',
-                width: 100,
-                height: 100,
-                fit: BoxFit.contain,
+              // =============================================================
+              // WITH ME LOGO
+              // =============================================================
+
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.surface,
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.35),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.12),
+                      blurRadius: 30,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: ClipOval(
+                  child: Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Image.asset(
+                      'assets/images/withme_logo.jpeg',
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.auto_awesome_rounded,
+                          color: AppColors.primary,
+                          size: 52,
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
 
-              // --------------------------------------------------
+              // =============================================================
               // APP NAME
-              // --------------------------------------------------
+              // =============================================================
+
               const Text(
                 'With Me',
                 style: TextStyle(
                   color: AppColors.textPrimary,
-                  fontSize: 42,
+                  fontSize: 38,
                   fontWeight: FontWeight.bold,
+                  letterSpacing: -0.5,
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
 
-              // --------------------------------------------------
+              // =============================================================
               // TAG
-              // --------------------------------------------------
+              // =============================================================
+
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.accentRed.withValues(alpha: 0.12),
+                  color: AppColors.primary.withValues(alpha: 0.10),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: AppColors.accentRed.withValues(alpha: 0.4),
+                    color: AppColors.primary.withValues(alpha: 0.30),
                   ),
                 ),
                 child: const Text(
                   'YOUR AI COMPANION',
                   style: TextStyle(
-                    color: AppColors.highlightGold,
-                    fontSize: 12,
+                    color: AppColors.primaryLight,
+                    fontSize: 11,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.5,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 45),
+              const SizedBox(height: 40),
 
-              // --------------------------------------------------
-              // ROCKET ICON
-              // --------------------------------------------------
+              // =============================================================
+              // GET STARTED ICON
+              // =============================================================
+
               Container(
-                width: 135,
-                height: 135,
+                width: 125,
+                height: 125,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.accentRed,
-                    width: 4,
+                    color: AppColors.primary.withValues(alpha: 0.55),
+                    width: 2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accentRed.withValues(alpha: 0.35),
-                      blurRadius: 35,
-                      spreadRadius: 5,
+                      color: AppColors.primary.withValues(alpha: 0.15),
+                      blurRadius: 32,
+                      spreadRadius: 3,
                     ),
                   ],
                 ),
                 child: Container(
-                  margin: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(9),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.accentRed,
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        AppColors.primary,
+                        AppColors.electricViolet,
+                      ],
+                    ),
                   ),
                   child: const Icon(
                     Icons.rocket_launch_rounded,
-                    color: Colors.white,
-                    size: 58,
+                    color: AppColors.background,
+                    size: 52,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 32),
+              const SizedBox(height: 30),
 
-              // --------------------------------------------------
-              // GET STARTED TITLE
-              // --------------------------------------------------
+              // =============================================================
+              // TITLE
+              // =============================================================
+
               const Text(
                 'Get Started',
                 textAlign: TextAlign.center,
@@ -124,10 +166,10 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: 8),
 
               const Text(
-                'To know you better',
+                'Let’s get to know you',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColors.accentRed,
+                  color: AppColors.primaryLight,
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
                 ),
@@ -135,10 +177,14 @@ class WelcomeScreen extends StatelessWidget {
 
               const SizedBox(height: 18),
 
+              // =============================================================
+              // DESCRIPTION
+              // =============================================================
+
               const Text(
-                "Help us tailor your companion's voice, empathy, "
-                'and conversation style so every interaction '
-                'feels deeply personal.',
+                "A few simple questions will help your companion "
+                "understand you better and make every conversation "
+                "feel more personal.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.textSecondary,
@@ -149,49 +195,53 @@ class WelcomeScreen extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              // --------------------------------------------------
+              // =============================================================
               // FEATURE CARD 1
-              // --------------------------------------------------
+              // =============================================================
+
               _FeatureCard(
                 icon: Icons.psychology_outlined,
-                title: 'Personality Calibration',
+                title: 'Understand You',
                 subtitle:
-                    'Adaptive responses tuned to your energy and mood',
+                    'Learn your personality, interests, preferences and more.',
               ),
 
               const SizedBox(height: 14),
 
-              // --------------------------------------------------
+              // =============================================================
               // FEATURE CARD 2
-              // --------------------------------------------------
+              // =============================================================
+
               _FeatureCard(
-                icon: Icons.mic_none_rounded,
-                title: 'Voice & Tone Preferences',
+                icon: Icons.favorite_border_rounded,
+                title: 'Personalize Your Companion',
                 subtitle:
-                    'Choose how your companion speaks and listens to you',
+                    'Choose how your AI companion should talk and interact with you.',
               ),
 
               const SizedBox(height: 14),
 
-              // --------------------------------------------------
+              // =============================================================
               // FEATURE CARD 3
-              // --------------------------------------------------
+              // =============================================================
+
               _FeatureCard(
                 icon: Icons.lock_outline_rounded,
-                title: '100% Private & Encrypted',
+                title: 'Your Preferences',
                 subtitle:
-                    'Your conversations and answers remain solely yours',
+                    'You decide what your companion should remember about you.',
               ),
 
               const SizedBox(height: 32),
 
-              // --------------------------------------------------
+              // =============================================================
               // GET STARTED BUTTON
-              // --------------------------------------------------
+              // =============================================================
+
               SizedBox(
                 width: double.infinity,
                 height: 58,
-                child: ElevatedButton.icon(
+                child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -201,37 +251,47 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: const Icon(
-                    Icons.arrow_forward_rounded,
-                    size: 24,
-                  ),
-                  label: const Text(
-                    'Get Started',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.accentRed,
-                    foregroundColor: Colors.white,
-                    elevation: 8,
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.background,
+                    elevation: 5,
                     shadowColor:
-                        AppColors.accentRed.withValues(alpha: 0.35),
+                        AppColors.primary.withValues(alpha: 0.25),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(16),
                     ),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Let’s Begin',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Icon(
+                        Icons.arrow_forward_rounded,
+                        size: 22,
+                      ),
+                    ],
                   ),
                 ),
               ),
 
               const SizedBox(height: 20),
 
+              // =============================================================
+              // FOOTER
+              // =============================================================
+
               const Text(
                 'You can always change your preferences later.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColors.textSecondary,
+                  color: AppColors.textMuted,
                   fontSize: 12,
                 ),
               ),
@@ -245,9 +305,9 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
-// ================================================================
+// ============================================================================
 // FEATURE CARD
-// ================================================================
+// ============================================================================
 
 class _FeatureCard extends StatelessWidget {
   final IconData icon;
@@ -264,37 +324,44 @@ class _FeatureCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF111A2D),
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: const Color(0xFF263451),
+          color: AppColors.indigoSlate,
+          width: 1,
         ),
       ),
       child: Row(
         children: [
-          // Icon box
+          // ---------------------------------------------------------------
+          // ICON
+          // ---------------------------------------------------------------
+
           Container(
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              color: AppColors.accentRed.withValues(alpha: 0.10),
+              color: AppColors.primary.withValues(alpha: 0.10),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(
-                color: AppColors.accentRed.withValues(alpha: 0.25),
+                color: AppColors.primary.withValues(alpha: 0.22),
               ),
             ),
             child: Icon(
               icon,
-              color: AppColors.accentRed,
+              color: AppColors.primaryLight,
               size: 25,
             ),
           ),
 
-          const SizedBox(width: 18),
+          const SizedBox(width: 17),
 
-          // Text
+          // ---------------------------------------------------------------
+          // TEXT
+          // ---------------------------------------------------------------
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,7 +374,9 @@ class _FeatureCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 const SizedBox(height: 5),
+
                 Text(
                   subtitle,
                   style: const TextStyle(
