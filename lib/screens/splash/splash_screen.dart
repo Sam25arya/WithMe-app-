@@ -178,8 +178,13 @@ class _SplashScreenState extends State<SplashScreen>
                   center: const Alignment(0.10, -0.18),
                   radius: 0.95,
                   colors: [
+<<<<<<< HEAD
                     const Color(0xFF1F2D4A).withValues(alpha: 0.70),
                     const Color(0xFF121A2D).withValues(alpha: 0.35),
+=======
+                    const Color(0xFF1F2D4A).withOpacity(0.70),
+                    const Color(0xFF121A2D).withOpacity(0.35),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                     Colors.transparent,
                   ],
                   stops: const [
@@ -284,8 +289,13 @@ class _SplashScreenState extends State<SplashScreen>
                   center: const Alignment(-0.82, -0.82),
                   radius: 0.90,
                   colors: [
+<<<<<<< HEAD
                     const Color(0xFFE52535).withValues(alpha: 0.18),
                     const Color(0xFF1A2848).withValues(alpha: 0.22),
+=======
+                    const Color(0xFFE52535).withOpacity(0.18),
+                    const Color(0xFF1A2848).withOpacity(0.22),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                     Colors.transparent,
                   ],
                   stops: const [
@@ -309,8 +319,13 @@ class _SplashScreenState extends State<SplashScreen>
                   center: const Alignment(0.82, 0.82),
                   radius: 0.90,
                   colors: [
+<<<<<<< HEAD
                     const Color(0xFFE52535).withValues(alpha: 0.20),
                     const Color(0xFF18263F).withValues(alpha: 0.25),
+=======
+                    const Color(0xFFE52535).withOpacity(0.20),
+                    const Color(0xFF18263F).withOpacity(0.25),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                     Colors.transparent,
                   ],
                   stops: const [
@@ -360,7 +375,11 @@ class _SplashScreenState extends State<SplashScreen>
                             boxShadow: [
                               BoxShadow(
                                 color: const Color(0xFFE52535)
+<<<<<<< HEAD
                                     .withValues(alpha: 0.55 * glow),
+=======
+                                    .withOpacity(0.55 * glow),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                                 blurRadius: 48 * glow,
                                 spreadRadius: 2 * glow,
                                 offset: Offset(
@@ -370,7 +389,11 @@ class _SplashScreenState extends State<SplashScreen>
                               ),
                               BoxShadow(
                                 color: const Color(0xFFE52535)
+<<<<<<< HEAD
                                     .withValues(alpha: 0.45 * glow),
+=======
+                                    .withOpacity(0.45 * glow),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                                 blurRadius: 42 * glow,
                                 spreadRadius: 2 * glow,
                                 offset: Offset(
@@ -380,7 +403,11 @@ class _SplashScreenState extends State<SplashScreen>
                               ),
                               BoxShadow(
                                 color: const Color(0xFFE52535)
+<<<<<<< HEAD
                                     .withValues(alpha: 0.45 * glow),
+=======
+                                    .withOpacity(0.45 * glow),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                                 blurRadius: 42 * glow,
                                 spreadRadius: 2 * glow,
                                 offset: Offset(
@@ -390,7 +417,11 @@ class _SplashScreenState extends State<SplashScreen>
                               ),
                               BoxShadow(
                                 color: const Color(0xFFE52535)
+<<<<<<< HEAD
                                     .withValues(alpha: 0.30 * glow),
+=======
+                                    .withOpacity(0.30 * glow),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                                 blurRadius: 18 * glow,
                                 spreadRadius: 1 * glow,
                                 offset: Offset(
@@ -406,7 +437,11 @@ class _SplashScreenState extends State<SplashScreen>
                               decoration: BoxDecoration(
                                 color: const Color(0xFFE8E2D8),
                                 border: Border.all(
+<<<<<<< HEAD
                                   color: Colors.white.withValues(alpha: 0.15),
+=======
+                                  color: Colors.white.withOpacity(0.15),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                                   width: 1.0,
                                 ),
                               ),
@@ -491,7 +526,11 @@ class _RedStarDivider extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 Colors.transparent,
+<<<<<<< HEAD
                 const Color(0xFFE52535).withValues(alpha: 0.80),
+=======
+                const Color(0xFFE52535).withOpacity(0.80),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
               ],
             ),
           ),
@@ -513,7 +552,11 @@ class _RedStarDivider extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
+<<<<<<< HEAD
                 const Color(0xFFE52535).withValues(alpha: 0.80),
+=======
+                const Color(0xFFE52535).withOpacity(0.80),
+>>>>>>> 07e84eb7a1f131bf8ec3fa5567782cf856bec66a
                 Colors.transparent,
               ],
             ),
