@@ -1,395 +1,424 @@
-import 'package:flutter/material.dart';
 
-import '../../core/constants/app_colors.dart';
+import 'dart:math' as math;
+import 'package:flutter/material.dart';
 import 'questionnaire_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
+  static const Color blush = Color(0xFFF5D5D2);
+  static const Color peach = Color(0xFFF6C9B8);
+  static const Color rose = Color(0xFFDDAAB4);
+  static const Color lavender = Color(0xFFB8A0BC);
+  static const Color mauve = Color(0xFF806B88);
+  static const Color deepMauve = Color(0xFF514557);
+  static const Color ink = Color(0xFF493D4B);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 32,
-            vertical: 28,
-          ),
-          child: Column(
-            children: [
-              // =============================================================
-              // WITH ME LOGO
-              // =============================================================
-
-              Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.surface,
-                  border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.35),
-                    width: 1.5,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.12),
-                      blurRadius: 30,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: ClipOval(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14),
-                    child: Image.asset(
-                      'assets/images/withme_logo.jpeg',
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.auto_awesome_rounded,
-                          color: AppColors.primary,
-                          size: 52,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // =============================================================
-              // APP NAME
-              // =============================================================
-
-              const Text(
-                'With Me',
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 38,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.5,
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              // =============================================================
-              // TAG
-              // =============================================================
-
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.10),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.30),
-                  ),
-                ),
-                child: const Text(
-                  'YOUR AI COMPANION',
-                  style: TextStyle(
-                    color: AppColors.primaryLight,
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              // =============================================================
-              // GET STARTED ICON
-              // =============================================================
-
-              Container(
-                width: 125,
-                height: 125,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.55),
-                    width: 2,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.15),
-                      blurRadius: 32,
-                      spreadRadius: 3,
-                    ),
-                  ],
-                ),
-                child: Container(
-                  margin: const EdgeInsets.all(9),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.primary,
-                        AppColors.electricViolet,
-                      ],
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.rocket_launch_rounded,
-                    color: AppColors.background,
-                    size: 52,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              // =============================================================
-              // TITLE
-              // =============================================================
-
-              const Text(
-                'Get Started',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 34,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              const Text(
-                'Let’s get to know you',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.primaryLight,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-
-              const SizedBox(height: 18),
-
-              // =============================================================
-              // DESCRIPTION
-              // =============================================================
-
-              const Text(
-                "A few simple questions will help your companion "
-                "understand you better and make every conversation "
-                "feel more personal.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 16,
-                  height: 1.5,
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              // =============================================================
-              // FEATURE CARD 1
-              // =============================================================
-
-              _FeatureCard(
-                icon: Icons.psychology_outlined,
-                title: 'Understand You',
-                subtitle:
-                    'Learn your personality, interests, preferences and more.',
-              ),
-
-              const SizedBox(height: 14),
-
-              // =============================================================
-              // FEATURE CARD 2
-              // =============================================================
-
-              _FeatureCard(
-                icon: Icons.favorite_border_rounded,
-                title: 'Personalize Your Companion',
-                subtitle:
-                    'Choose how your AI companion should talk and interact with you.',
-              ),
-
-              const SizedBox(height: 14),
-
-              // =============================================================
-              // FEATURE CARD 3
-              // =============================================================
-
-              _FeatureCard(
-                icon: Icons.lock_outline_rounded,
-                title: 'Your Preferences',
-                subtitle:
-                    'You decide what your companion should remember about you.',
-              ),
-
-              const SizedBox(height: 32),
-
-              // =============================================================
-              // GET STARTED BUTTON
-              // =============================================================
-
-              SizedBox(
-                width: double.infinity,
-                height: 58,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const QuestionnaireScreen(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.background,
-                    elevation: 5,
-                    shadowColor:
-                        AppColors.primary.withValues(alpha: 0.25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Let’s Begin',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.arrow_forward_rounded,
-                        size: 22,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // =============================================================
-              // FOOTER
-              // =============================================================
-
-              const Text(
-                'You can always change your preferences later.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.textMuted,
-                  fontSize: 12,
-                ),
-              ),
-
-              const SizedBox(height: 15),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ============================================================================
-// FEATURE CARD
-// ============================================================================
-
-class _FeatureCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  const _FeatureCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.indigoSlate,
-          width: 1,
-        ),
-      ),
-      child: Row(
+      body: Stack(
+        fit: StackFit.expand,
         children: [
-          // ---------------------------------------------------------------
-          // ICON
-          // ---------------------------------------------------------------
+          // Dreamy pastel mountain background.
+          const _DreamyMountainBackground(),
 
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.22),
-              ),
-            ),
-            child: Icon(
-              icon,
-              color: AppColors.primaryLight,
-              size: 25,
-            ),
-          ),
+          SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        26, 24, 26, 28,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // App identity.
+                          Row(
+                            children: [
+                              Container(
+                                width: 46,
+                                height: 46,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(
+                                    alpha: 0.48,
+                                  ),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.white.withValues(
+                                      alpha: 0.65,
+                                    ),
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.favorite_rounded,
+                                  color: deepMauve,
+                                  size: 23,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Text(
+                                'with me',
+                                style: TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: -0.7,
+                                  color: ink,
+                                ),
+                              ),
+                            ],
+                          ),
 
-          const SizedBox(width: 17),
+                          const SizedBox(height: 44),
 
-          // ---------------------------------------------------------------
-          // TEXT
-          // ---------------------------------------------------------------
+                          // Welcome text.
+                          const Text(
+                            "Hi, I'm Yuki. 👋",
+                            style: TextStyle(
+                              fontSize: 35,
+                              height: 1.15,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -1.1,
+                              color: ink,
+                            ),
+                          ),
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                          const SizedBox(height: 18),
+
+                          const Text(
+                            'Before We Begin…',
+                            style: TextStyle(
+                              fontSize: 24,
+                              height: 1.25,
+                              fontWeight: FontWeight.w600,
+                              color: deepMauve,
+                            ),
+                          ),
+
+                          const SizedBox(height: 10),
+
+                          Text(
+                            "I'd love to get to know you.",
+                            style: TextStyle(
+                              fontSize: 17,
+                              height: 1.5,
+                              color: ink.withValues(alpha: 0.82),
+                            ),
+                          ),
+
+                          const SizedBox(height: 18),
+
+                          // Gentle decorative divider.
+                          Row(
+                            children: [
+                              Container(
+                                width: 42,
+                                height: 3,
+                                decoration: BoxDecoration(
+                                  color: mauve.withValues(alpha: 0.75),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              const SizedBox(width: 7),
+                              Container(
+                                width: 8,
+                                height: 3,
+                                decoration: BoxDecoration(
+                                  color: mauve.withValues(alpha: 0.4),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          // Keep the lower area open for Yuki's
+                          // real character model in a future update.
+                          const SizedBox(height: 250),
+
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.42),
+                              borderRadius: BorderRadius.circular(24),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.65),
+                              ),
+                            ),
+                            child: const Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.auto_awesome_rounded,
+                                  color: deepMauve,
+                                  size: 25,
+                                ),
+                                SizedBox(width: 13),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'A little about you',
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700,
+                                          color: ink,
+                                        ),
+                                      ),
+                                      SizedBox(height: 6),
+                                      Text(
+                                        'A few simple questions will help '
+                                        'make our conversations feel more '
+                                        'personal. Take your time.',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          height: 1.5,
+                                          color: deepMauve,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 22),
+
+                          SizedBox(
+                            width: double.infinity,
+                            height: 58,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        const QuestionnaireScreen(),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: deepMauve,
+                                foregroundColor: Colors.white,
+                                elevation: 3,
+                                shadowColor: deepMauve.withValues(
+                                  alpha: 0.25,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Let's Begin",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: 21,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 14),
+
+                          Center(
+                            child: Text(
+                              'One little step at a time ♡',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: ink.withValues(alpha: 0.7),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-
-                const SizedBox(height: 5),
-
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 13,
-                    height: 1.35,
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],
       ),
     );
+  }
+}
+
+class _DreamyMountainBackground extends StatelessWidget {
+  const _DreamyMountainBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Warm peach-pink sky.
+        const DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFF9DCD1),
+                Color(0xFFF0CFD3),
+                Color(0xFFD9C1D5),
+                Color(0xFFB8A4C1),
+              ],
+              stops: [0.0, 0.34, 0.70, 1.0],
+            ),
+          ),
+        ),
+
+        // Soft glow in the sky.
+        Positioned(
+          top: 105,
+          right: -75,
+          child: Container(
+            width: 250,
+            height: 250,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  Colors.white.withValues(alpha: 0.38),
+                  Colors.white.withValues(alpha: 0.0),
+                ],
+              ),
+            ),
+          ),
+        ),
+
+        // Distant mountain silhouettes.
+        const Positioned.fill(
+          child: CustomPaint(
+            painter: _MountainPainter(
+              color: Color(0xFFD7B9CE),
+              heightFactor: 0.59,
+              phase: 0.5,
+              seed: 2,
+            ),
+          ),
+        ),
+
+        const Positioned.fill(
+          child: CustomPaint(
+            painter: _MountainPainter(
+              color: Color(0xFFB79CB9),
+              heightFactor: 0.70,
+              phase: 2.0,
+              seed: 5,
+            ),
+          ),
+        ),
+
+        const Positioned.fill(
+          child: CustomPaint(
+            painter: _MountainPainter(
+              color: Color(0xFF96809F),
+              heightFactor: 0.81,
+              phase: 4.0,
+              seed: 8,
+            ),
+          ),
+        ),
+
+        // Foreground ledge: intentionally empty for Yuki later.
+        const Positioned.fill(
+          child: CustomPaint(
+            painter: _MountainPainter(
+              color: Color(0xFF66566F),
+              heightFactor: 0.91,
+              phase: 1.2,
+              seed: 11,
+            ),
+          ),
+        ),
+
+        // A subtle atmospheric wash blends the landscape.
+        DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.white.withValues(alpha: 0.04),
+                Colors.transparent,
+                const Color(0xFF55465E).withValues(alpha: 0.08),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _MountainPainter extends CustomPainter {
+  final Color color;
+  final double heightFactor;
+  final double phase;
+  final int seed;
+
+  const _MountainPainter({
+    required this.color,
+    required this.heightFactor,
+    required this.phase,
+    required this.seed,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = Path()
+      ..moveTo(0, size.height * heightFactor);
+
+    // Smooth, uneven peaks for a layered mountain silhouette.
+    const steps = 8;
+    for (int i = 0; i <= steps; i++) {
+      final x = size.width * i / steps;
+      final wave = math.sin(i * 1.45 + phase) * 0.045;
+      final smallerWave = math.cos(i * 2.2 + seed) * 0.018;
+      final y = size.height *
+          (heightFactor - wave - smallerWave);
+
+      path.lineTo(x, y);
+    }
+
+    path
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = color
+        ..style = PaintingStyle.fill,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _MountainPainter oldDelegate) {
+    return oldDelegate.color != color ||
+        oldDelegate.heightFactor != heightFactor ||
+        oldDelegate.phase != phase ||
+        oldDelegate.seed != seed;
   }
 }
